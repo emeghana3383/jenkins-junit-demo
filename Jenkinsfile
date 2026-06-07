@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('GitHub Integration') {
-            steps {
-                echo 'Cloning Repository'
-            }
-        }
-
         stage('Build') {
             steps {
                 bat 'mvn clean compile'
@@ -18,6 +12,11 @@ pipeline {
         stage('Test') {
             steps {
                 bat 'mvn test'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
             }
         }
 
